@@ -1,0 +1,17 @@
+REEL STUDIO - END USER LICENCE
+
+By installing Reel Studio you agree to the following.
+
+1. Licence. You get a personal, non-transferable licence to install and use Reel Studio on up to 2 computers you own, with the licence key you bought. You may not resell, share, rent or redistribute the software or your licence key.
+
+2. What you need. Reel Studio runs on your computer and uses Claude Code, signed in with your own Claude account and subscription, as its AI engine. Your use of Claude is governed by Anthropic's terms. Reel Studio does not access, store or share your Claude account.
+
+3. Your content. The reels you make are yours. You are responsible for the topics, scripts, voices, footage and music you use, including the licence terms of any stock media or music you download through the app and any voice you upload.
+
+4. Third-party components. Reel Studio includes and downloads open-source components under their own licences (see THIRD_PARTY_NOTICES.md in the install folder).
+
+5. Online services. Licence checks use Lemon Squeezy. Optional features use online services you choose to enable (for example stock-media searches with your own API keys, and the Edge online voice for Malay).
+
+6. No warranty. Reel Studio is provided "as is", without warranty of any kind. To the extent allowed by law, the author is not liable for any damages arising from its use.
+
+7. Refunds and support follow the policy on the page where you bought Reel Studio.

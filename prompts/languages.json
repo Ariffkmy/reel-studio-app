@@ -1,0 +1,30 @@
+[
+  {
+    "id": "en",
+    "label": "English",
+    "whisper": "en",
+    "wps": 2.6,
+    "rules": "Write everything (spoken lines, on-screen text, captions) in natural, plain English."
+  },
+  {
+    "id": "ms-casual",
+    "label": "Bahasa Melayu (santai)",
+    "whisper": "ms",
+    "wps": 2.3,
+    "rules": "Write everything (spoken lines, on-screen text, captions) in casual Malaysian Malay, the way people talk on TikTok and Reels: natural spoken Bahasa Malaysia with light everyday slang (e.g. 'korang', 'tau tak', 'senang je', 'confirm'), short sentences, warm and friendly. Keep common English tech words people really use (AI, app, video). Spell numbers as words in the voice script."
+  },
+  {
+    "id": "ms-formal",
+    "label": "Bahasa Melayu (formal)",
+    "whisper": "ms",
+    "wps": 2.3,
+    "rules": "Write everything (spoken lines, on-screen text, captions) in standard, clear Bahasa Melayu (bahasa baku), polite and easy to follow, no slang. Spell numbers as words in the voice script."
+  },
+  {
+    "id": "mixed",
+    "label": "Malay + English (mixed)",
+    "whisper": "auto",
+    "wps": 2.4,
+    "rules": "Keep the creator's natural mix of Malay and English (bahasa rojak) exactly as spoken; on-screen text uses their own words."
+  }
+]

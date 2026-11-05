@@ -1,0 +1,6 @@
+{
+  "storeId": 0,
+  "productId": 0,
+  "buyUrl": "https://yourstore.lemonsqueezy.com/buy/xxxxxxxx",
+  "_help": "After you create the product in Lemon Squeezy, put its Store ID and Product ID here (Settings -> Stores, and the product page). 0 = don't check. buyUrl = your checkout link."
+}

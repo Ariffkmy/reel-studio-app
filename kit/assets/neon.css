@@ -1,0 +1,36 @@
+/* DARK NEON DATA: near-black grid, drifting particles (build.py bg), glowing ring gauges with big stats,
+   dimmed UI mockups, one bold white word at the top. Fonts: Space Grotesk (OFL), JetBrains Mono. */
+@font-face { font-family: "Space Grotesk"; font-weight: 500; font-display: block; src: url("fonts/SpaceGrotesk-500.woff2") format("woff2"); }
+@font-face { font-family: "Space Grotesk"; font-weight: 700; font-display: block; src: url("fonts/SpaceGrotesk-700.woff2") format("woff2"); }
+@font-face { font-family: "JetBrains Mono"; font-weight: 100 900; font-display: block; src: url("fonts/JetBrainsMono-var.woff2") format("woff2"); }
+:root {
+  --ne-bg: #0A0A0C; --ne-card: #141418; --ne-line: rgba(255, 255, 255, .09); --ne-text: #F4F4F5; --ne-muted: #8B8B94;
+  --ne-red: #FF5E5E; --ne-glow: rgba(255, 94, 94, .55); --ne-mint: #5EEAD4; --ne-amber: #FBBF24;
+  --ne-head: "Space Grotesk", "Inter", system-ui, sans-serif; --ne-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+.ne-word { font: 700 104px/1 var(--ne-head); letter-spacing: -0.04em; color: var(--ne-text); text-shadow: 0 0 40px rgba(255, 255, 255, .18); }
+.ne-h2 { font: 700 72px/1.04 var(--ne-head); letter-spacing: -0.035em; color: var(--ne-text); }
+.ne-h2 b, .ne-word b { color: var(--ne-red); text-shadow: 0 0 30px var(--ne-glow); }
+.ne-label { font: 500 28px/1 var(--ne-head); color: #C9C9CF; display: inline-flex; gap: 12px; align-items: center; }
+.ne-label::before { content: "◇"; color: var(--ne-mint); }
+.ne-mono { font: 500 28px/1.5 var(--ne-mono); color: var(--ne-muted); }
+
+/* ring gauge: set --p (0..1) with gsap on the element's style for the arc; the stat counts with onUpdate */
+.ne-ring { position: absolute; width: 640px; height: 640px; border-radius: 50%; display: grid; place-items: center; text-align: center; }
+.ne-ring::before { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 16px solid rgba(255, 94, 94, .12); }
+.ne-ring svg { position: absolute; inset: 0; transform: rotate(-90deg); overflow: visible; }
+.ne-ring circle.arc { fill: none; stroke: var(--ne-red); stroke-width: 16; stroke-linecap: round; filter: drop-shadow(0 0 18px var(--ne-glow)) drop-shadow(0 0 40px var(--ne-glow)); }
+.ne-stat { font: 700 150px/1 var(--ne-head); letter-spacing: -0.04em; color: var(--ne-red); text-shadow: 0 0 40px var(--ne-glow); }
+.ne-ring .ne-mono { margin-top: 14px; }
+
+/* dim UI mockups / cards */
+.ne-card { position: absolute; background: var(--ne-card); border: 1.5px solid var(--ne-line); border-radius: 22px; box-shadow: 0 40px 90px -40px rgba(0, 0, 0, .9); }
+.ne-browser { overflow: hidden; }
+.ne-browser .bar { height: 46px; display: flex; gap: 10px; align-items: center; padding: 0 18px; border-bottom: 1px solid var(--ne-line); font: 500 20px/1 var(--ne-mono); color: var(--ne-muted); }
+.ne-browser .bar i { width: 12px; height: 12px; border-radius: 50%; background: #3A3A42; }
+.ne-chip { display: inline-flex; gap: 10px; align-items: center; padding: 12px 20px; border-radius: 99px; border: 1.5px solid var(--ne-line); background: rgba(255, 255, 255, .03); font: 500 24px/1 var(--ne-mono); color: var(--ne-text); }
+.ne-chip.hot { border-color: var(--ne-red); color: var(--ne-red); box-shadow: 0 0 22px -4px var(--ne-glow); }
+.ne-bar { position: absolute; height: 18px; border-radius: 99px; background: rgba(255, 255, 255, .07); overflow: hidden; }
+.ne-bar i { position: absolute; inset: 0; border-radius: 99px; background: linear-gradient(90deg, #FF8A5E, var(--ne-red)); box-shadow: 0 0 24px var(--ne-glow); transform-origin: 0 50%; }
+.ne-row { display: flex; justify-content: space-between; padding: 22px 28px; border-bottom: 1px solid var(--ne-line); font: 500 30px/1 var(--ne-head); color: var(--ne-text); }
+.ne-row span:last-child { font-family: var(--ne-mono); color: var(--ne-red); }

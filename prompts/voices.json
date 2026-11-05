@@ -1,0 +1,32 @@
+{
+  "kokoro": {
+    "label": "Kokoro (free, offline, English only)",
+    "languages": ["en"],
+    "voices": [
+      { "id": "af_heart", "label": "Heart (US, female)" },
+      { "id": "af_nova", "label": "Nova (US, female)" },
+      { "id": "af_sky", "label": "Sky (US, female)" },
+      { "id": "am_adam", "label": "Adam (US, male)" },
+      { "id": "am_michael", "label": "Michael (US, male)" },
+      { "id": "bf_emma", "label": "Emma (UK, female)" },
+      { "id": "bf_isabella", "label": "Isabella (UK, female)" },
+      { "id": "bm_george", "label": "George (UK, male)" }
+    ]
+  },
+  "edge": {
+    "label": "Edge TTS (free, needs internet, English + Malay)",
+    "languages": ["en", "ms-casual", "ms-formal"],
+    "voices": [
+      { "id": "ms-MY-YasminNeural", "label": "Yasmin (Malay, female)", "lang": "ms" },
+      { "id": "ms-MY-OsmanNeural", "label": "Osman (Malay, male)", "lang": "ms" },
+      { "id": "en-US-AndrewNeural", "label": "Andrew (US, male)", "lang": "en" },
+      { "id": "en-US-AvaNeural", "label": "Ava (US, female)", "lang": "en" },
+      { "id": "en-US-BrianNeural", "label": "Brian (US, male)", "lang": "en" },
+      { "id": "en-US-EmmaNeural", "label": "Emma (US, female)", "lang": "en" },
+      { "id": "en-GB-RyanNeural", "label": "Ryan (UK, male)", "lang": "en" },
+      { "id": "en-GB-SoniaNeural", "label": "Sonia (UK, female)", "lang": "en" },
+      { "id": "en-SG-WayneNeural", "label": "Wayne (Singapore, male)", "lang": "en" },
+      { "id": "en-SG-LunaNeural", "label": "Luna (Singapore, female)", "lang": "en" }
+    ]
+  }
+}

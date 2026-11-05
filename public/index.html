@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reel Studio</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23DC6530'/><rect x='10' y='6' width='12' height='20' rx='3' fill='none' stroke='white' stroke-width='2.4'/><path d='M14.5 12.5v7l5-3.5z' fill='white'/></svg>">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <aside class="side">
+    <a class="brand" href="#/">
+      <span class="logo"><svg viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="var(--accent)"/><rect x="10" y="6" width="12" height="20" rx="3" fill="none" stroke="#fff" stroke-width="2.4"/><path d="M14.5 12.5v7l5-3.5z" fill="#fff"/></svg></span>
+      <span><b>Reel Studio</b><small>works with Claude Code</small></span>
+    </a>
+    <nav>
+      <a href="#/new" data-nav="new" class="nav-new">＋ New reel</a>
+      <a href="#/talk" data-nav="talk">🎙 Talking video</a>
+      <a href="#/" data-nav="projects">🎞 Projects</a>
+      <a href="#/prompts" data-nav="prompts">✍️ Prompts &amp; styles</a>
+      <a href="#/setup" data-nav="setup">🛠 Setup &amp; settings</a>
+    </nav>
+    <div class="side-foot" id="sideFoot"></div>
+  </aside>
+  <main id="view"></main>
+  <div id="toast"></div>
+  <script src="app.js"></script>
+  <script src="talking.js"></script>
+</body>
+</html>

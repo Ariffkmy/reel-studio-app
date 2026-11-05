@@ -1,0 +1,81 @@
+{
+  "name": "reel-studio",
+  "productName": "Reel Studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Desktop app that makes animated 9:16 reels with Claude Code + HyperFrames",
+  "author": "Reel Studio",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "app": "electron .",
+    "dist": "node dev/protect.js && electron-builder --win nsis --x64 --publish never && node dev/hash.js",
+    "sfx": "python dev/make_sfx.py shared/sfx"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "multer": "^2.0.2"
+  },
+  "devDependencies": {
+    "electron": "33.2.1",
+    "electron-builder": "25.1.8",
+    "javascript-obfuscator": "^4.1.1"
+  },
+  "build": {
+    "appId": "my.reelstudio.app",
+    "productName": "Reel Studio",
+    "copyright": "Copyright © 2026 Reel Studio",
+    "asar": true,
+    "directories": {
+      "output": "dist",
+      "app": "build/app",
+      "buildResources": "electron"
+    },
+    "files": [
+      "**/*",
+      "!**/__pycache__/**",
+      "!**/*.pyc"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "electron/icon.ico",
+      "signAndEditExecutable": true
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Reel Studio",
+      "artifactName": "ReelStudio-Setup.exe",
+      "installerIcon": "electron/icon.ico",
+      "uninstallerIcon": "electron/icon.ico",
+      "license": "EULA.txt"
+    },
+    "asarUnpack": [
+      "tools/**",
+      "shared/**",
+      "kit/**",
+      "kit-canvas/**",
+      "kit-talking/**"
+    ],
+    "electronVersion": "33.2.1",
+    "publish": [
+      {
+        "provider": "generic",
+        "url": "https://example.invalid/reelstudio"
+      }
+    ]
+  }
+}

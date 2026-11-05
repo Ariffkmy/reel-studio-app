@@ -1,0 +1,114 @@
+[
+ {
+  "id": "paper",
+  "name": "Paper explainer",
+  "emoji": "📄",
+  "length": 40,
+  "theme": "paper",
+  "brief": "Warm off-white ruled paper (theme 'paper'), near-black ink, one tomato accent (var(--rs-accent)) and a deep green second colour used rarely. Headlines in Geist ExtraBold with the key word in Instrument Serif italic (*word* in s.headline). Each sentence gets one concrete object or card: a jar, a phone, a receipt, a stat that counts up, a checklist, a terminal, a simple chart. Objects are drawn as clean flat SVG with thick ink outlines. Calm but busy enough: something new every 2-3 seconds, idle bob on held objects.",
+  "prompt": "Make a 40-second paper explainer about [a money/productivity tip]: warm ruled paper, one tomato accent, one flat object or card per sentence, a big count-up number for the proof, captions word by word."
+ },
+ {
+  "id": "storybook",
+  "name": "Storybook night",
+  "emoji": "🌙",
+  "length": 45,
+  "theme": "storybook",
+  "brief": "A bedtime-story look (theme 'storybook'): deep navy night sky with stars, a glowing moon and a dark hill (built into the background). Characters and props are soft rounded flat shapes in cream, lamp yellow (var(--rs-accent)) and mint (var(--rs-accent2)), with thick rounded outlines and a slight hand-cut feel. Headlines in Caveat handwriting. Slow, gentle motion: drifting, swaying, twinkling, a lamp that brightens, pages that turn. No fast cuts; hold each picture 3-5 seconds with idle motion.",
+  "prompt": "Make a 45-second bedtime story reel about [a small character who learns something]: navy night, glowing moon, soft rounded paper-cut characters, slow gentle motion, a warm ending."
+ },
+ {
+  "id": "blueprint",
+  "name": "Blueprint steps",
+  "emoji": "📐",
+  "length": 40,
+  "brief": "Light grid-paper background (built in, style 'blueprint') with clean blue UI and diagrams, like a product walkthrough. Use blueprint.css: .bp-h1/.bp-h2 (Space Grotesk, key word in <b> = blue), .bp-ghost (big faded grey word at the top, e.g. the spoken word just before), .bp-kicker ('// ' mono). Signature layout: a vertical timeline rail on the left (.bp-rail with an inner <i> that fills by scaleY as steps progress) with an avatar .bp-node and a numbered .bp-pill ('<em>01</em> Step name') per step, and the step's content to the right of the rail: white .bp-card UI mockups (.bp-app with .bp-icon/.bp-title/.bp-sub/.bp-btn, .bp-seg segmented tabs with .on, .bp-term status lines), folder trees (.bp-folder with .ic and .lb, joined by .bp-wire lines), .bp-tag labels. Motion: cards slide up 40px and fade, the rail fills down to the next pill on each step, wires draw (scaleX/scaleY from 0), buttons pulse once when named, the active tab outline moves. Calm, precise, one step per sentence. Captions: Space Grotesk, blue highlight. Fill the phone frame: main headline 850-940 px wide, cards and diagrams at least 700 px wide, the middle third (y 600-1200) never empty for more than half a second.",
+  "prompt": "Make a 40-second blueprint-steps explainer about [how to set something up]: grid paper, a timeline rail on the left with numbered step pills, a clean UI card for each step (app cards, tabs, terminal lines, folder trees), the rail filling as we move through the steps."
+ },
+ {
+  "id": "poster",
+  "name": "Halftone poster",
+  "emoji": "📰",
+  "length": 40,
+  "brief": "Halftone-paper background (built in, style 'poster') with loud editorial poster typography and a friendly cartoon presenter. Use poster.css: .po-h1/.po-h2 (Anton, uppercase; wrap the key word in <span class='r'> for red), .po-kicker ('// don't use' mono line above the headline), .po-ghost (big faded grey word at the top), .po-badge + .po-dots (step counter, e.g. 1 of 5, top right), .po-step cards (number tile .n + bold title <b> + '// sub' <small>; .on = red active step) placed along an SVG .po-road (path.track + path.run drawn with strokeDashoffset) for roadmaps like '6 STEPS', .po-x (red X slammed over a wrong option; animate --x1/--x2 from 0 to 1), .po-win browser windows, .po-file cards (.tag like JS/MD, .nm, .ln lines), .po-pill. The presenter: inline presenter({id:'pr'}) (from assets/presenter.js, already in ulib.js) bottom-right, about x 640-1010, y 1380-1900 (he can overlap the caption band's right side; keep captions left-centred or move them up in those scenes), animate #pr-head (small nods/tilts, origin 200px 300px), #pr-eyes blinks (scaleY .1 for 0.08 s), #pr-arm (rotate around 300px 400px: point up on key words), #pr-mouth-o opacity for 'talking' on stressed words. Motion: headlines slam in (scale 1.15→1 with a tiny shake), cards drop with a hard shadow, red X draws on the word 'not/don't', counters tick. Punchy, a new visual every sentence. Captions: Anton uppercase, red highlight. Fill the phone frame: main headline 850-940 px wide, cards and diagrams at least 700 px wide, the middle third (y 600-1200) never empty for more than half a second.",
+  "prompt": "Make a 40-second halftone-poster explainer about [a tip or mistake]: halftone paper, huge condensed uppercase headlines with one red word, a // kicker, a step badge, a red X over the wrong way, a roadmap of numbered step cards, and the cartoon presenter pointing at each point."
+ },
+ {
+  "id": "neon",
+  "name": "Dark neon data",
+  "emoji": "📟",
+  "length": 35,
+  "brief": "Near-black background with a faint grid and drifting red particles (built in, style 'neon'): a dramatic tech/data explainer. Use neon.css: .ne-word (one bold white word or short phrase at the top, swapped per sentence with tl.set display toggles, e.g. 'attack.'), .ne-h2 (<b> = glowing red), .ne-ring gauges (an SVG circle.arc with r=312 in a 640 viewBox; animate stroke-dashoffset from 1960 to the value; the .ne-stat number counts up with an onUpdate counter; .ne-label with the mint ◇ above, .ne-mono detail line below), .ne-card dim UI mockups (.ne-browser with .bar; keep them at ~0.5 opacity behind the main stat), .ne-chip (.hot = red glow), .ne-bar progress bars (inner <i> scaleX), .ne-row ledger rows. Motion: slow push-ins on the main element (scale 1→1.04 over the scene), rings sweep and overshoot past 100% when something is 'too much', numbers count fast, glows pulse once on the key word, red flashes for warnings. Tense and cinematic, one big number per beat. Captions: Space Grotesk white, red highlight. Fill the phone frame: main headline 850-940 px wide, cards and diagrams at least 700 px wide, the middle third (y 600-1200) never empty for more than half a second.",
+  "prompt": "Make a 35-second dark neon data explainer about [a risk, cost or surprising number]: black grid with drifting red particles, one bold white word at the top, a glowing red ring gauge with a huge number counting up past its limit, dim website mockups behind it."
+ },
+ {
+  "id": "cv-cut-paper",
+  "name": "Cut paper",
+  "emoji": "✂️",
+  "length": 40,
+  "engine": "canvas",
+  "canvasStyle": "cut-paper",
+  "brief": "Torn paper shapes with drop shadows, crayon and paper patterns, characters with faces, a small orange 'spark' hero that changes with the story; warm and storybook-like. Shape morphs between scenes (one object becomes the next world).",
+  "prompt": "Make a 40-second cut-paper explainer about [a history or a process]: torn paper worlds with drop shadows, a little spark hero that gains something each step, one object morphing into the next scene."
+ },
+ {
+  "id": "cv-crosshatch",
+  "name": "Crosshatch ink",
+  "emoji": "🖋",
+  "length": 40,
+  "engine": "canvas",
+  "canvasStyle": "crosshatch",
+  "brief": "Sketchy ink lines that boil on 2s, hatch and pencil shading on warm paper, with a navy 'inside the machine' world for digital ideas; an ink-dot hero with eyes. Feels hand-drawn and alive.",
+  "prompt": "Make a 40-second crosshatch-ink explainer about [how something works inside a computer]: boiling ink lines on warm paper, a navy world inside the machine, an ink-dot hero with eyes."
+ },
+ {
+  "id": "cv-riso",
+  "name": "Riso print",
+  "emoji": "🟡",
+  "length": 35,
+  "engine": "canvas",
+  "canvasStyle": "riso",
+  "brief": "A three-ink risograph print (teal, fluorescent pink, yellow) on cream paper: halftone dots at their own angles, overprints instead of mixed colours, slight misregistration and ink dropouts. Flat, bright, a little worn; a violet blob hero.",
+  "prompt": "Make a 35-second riso-print explainer about [a daily-life idea]: three-ink halftone print on cream paper, overprinted colours, a violet blob hero, bright flat worlds."
+ },
+ {
+  "id": "cv-sketchbook",
+  "name": "Sketchbook doodle",
+  "emoji": "✏️",
+  "length": 40,
+  "engine": "canvas",
+  "canvasStyle": "sketchbook",
+  "brief": "Graphite pencil and one accent colour on a spiral sketchbook page, hand lettering and taped labels, doodled props (lightbulb, paper plane, stars), a round doodle hero with a face. Feels like ideas being sketched live.",
+  "prompt": "Make a 40-second sketchbook explainer about [an idea or a tip]: graphite doodles and one accent colour on a sketchbook page, hand-lettered notes, a round doodle hero sketching each step."
+ },
+ {
+  "id": "cv-math",
+  "name": "Math explainer",
+  "emoji": "∑",
+  "length": 40,
+  "engine": "canvas",
+  "canvasStyle": "math",
+  "brief": "A manim/3Blue1Brown-style explainer: black stage, axes, graphs and geometry drawn on, colour-coded variables (each quantity keeps its colour), typeset equations, smooth easing, a small π character beside the graph. One idea per frame.",
+  "prompt": "Make a 40-second math-style explainer about [a formula, a statistic or how a number grows]: black stage, graphs drawing themselves, colour-coded variables, equations that transform step by step."
+ },
+ {
+  "id": "cv-pixel",
+  "name": "Pixel art",
+  "emoji": "👾",
+  "length": 35,
+  "engine": "canvas",
+  "canvasStyle": "pixel",
+  "brief": "Low-resolution 8-bit game look: drawn at the true pixel resolution and upscaled nearest-neighbour, a bitmap font, a sprite hero with a two-frame idle, levels, score counters and coins. Playful and retro.",
+  "prompt": "Make a 35-second pixel-art explainer about [a goal or a challenge]: an 8-bit game world, a sprite hero levelling up through each step, score counters and coins, a bitmap font."
+ },
+ {
+  "id": "cv-isometric",
+  "name": "Isometric line art",
+  "emoji": "🧊",
+  "length": 40,
+  "engine": "canvas",
+  "canvasStyle": "isometric",
+  "brief": "Precise isometric line art: constant hairlines, white faces hiding what's behind, rounded slabs, one dark accent, light or dark ground; a small cube-bot hero. Clean product/tech diagrams (laptops, servers, desks, apps).",
+  "prompt": "Make a 40-second isometric explainer about [how an app or a workflow works]: clean isometric line drawings of laptops, servers and screens, a small cube-bot hero moving through the system."
+ }
+]

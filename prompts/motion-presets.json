@@ -1,0 +1,272 @@
+[
+ {
+  "id": "headline",
+  "label": "Kinetic headline",
+  "category": "titles",
+  "description": "Letters rise in with a kicker and a serif accent line",
+  "help": "One line per row. Start a line with // for a small code-style kicker, ~ for an orange italic accent line. Add @1.5 at the start of a line to make it enter 1.5 s in.",
+  "example": "// testing, testing\nEDIT VIDEO\n~guna Claude",
+  "seconds": 4,
+  "anchorY": -0.28
+ },
+ {
+  "id": "chips",
+  "label": "Chips",
+  "category": "info",
+  "description": "Pill tags that slide in one by one",
+  "help": "Each plain line is a chip. Start with * for an accent chip, # for a big title above, // for a kicker. Use @seconds to time a line, e.g. @2.5 DeepSeek.",
+  "example": "// daily driver\n#HANYA 2 NI\nChatGPT\n*Claude\n@2.5 LLM lain → OpenRouter",
+  "seconds": 5,
+  "anchorY": -0.28
+ },
+ {
+  "id": "terminal",
+  "label": "Terminal typewriter",
+  "category": "social",
+  "description": "Code window that types your text",
+  "help": "First line is the window title. Every following line is typed out in order.",
+  "example": "whoami.sh\n> software engineer\n> pakai Claude hari-hari",
+  "seconds": 5,
+  "anchorY": -0.26
+ },
+ {
+  "id": "checklist",
+  "label": "Todo checklist",
+  "category": "social",
+  "description": "A todo.md card whose items tick off",
+  "help": "First line is the card title. Items: [x] gets ticked during the animation, [ ] stays open. Use @seconds to time an item.",
+  "example": "todo.md\n[x] record video ni\n[ ] test kat rumah\n[ ] figure out how",
+  "seconds": 6,
+  "anchorY": -0.26
+ },
+ {
+  "id": "stamp",
+  "label": "Stamp slam",
+  "category": "emphasis",
+  "description": "Rubber stamp that slams in and shakes",
+  "help": "Line 1 is stamped. Optional ~line underneath in serif italic.",
+  "example": "EXPOSE!\n~coming soon",
+  "seconds": 3,
+  "anchorY": -0.25
+ },
+ {
+  "id": "flow",
+  "label": "Step diagram",
+  "category": "info",
+  "description": "2–4 cards connected by arrows",
+  "help": "One step per line, written as small | big. Cards enter one after another; use @seconds to time each step. A // line adds a kicker.",
+  "example": "letak | footage\napp ni | buat kerja\nikut | style korang",
+  "seconds": 7,
+  "anchorY": -0.26
+ },
+ {
+  "id": "marquee",
+  "label": "Marquee",
+  "category": "titles",
+  "description": "Big scrolling repeated word",
+  "help": "Line 1 pops in on top. Line 2 scrolls in three rows (outline / solid / outline).",
+  "example": "AI IS\nEVERYWHERE",
+  "seconds": 3.5,
+  "anchorY": -0.27
+ },
+ {
+  "id": "bigword",
+  "label": "Giant word",
+  "category": "titles",
+  "description": "One huge word scales in under a serif lead-in",
+  "help": "~line is the serif lead-in. The other line is shown huge in the accent colour.",
+  "example": "~Berkenaan dengan\nAI",
+  "seconds": 5,
+  "anchorY": -0.26
+ },
+ {
+  "id": "progress",
+  "label": "Speed bar",
+  "category": "emphasis",
+  "description": "Italic title with speed lines and a filling progress bar",
+  "help": "Line 1 is the title, ~line is the label under the bar.",
+  "example": "SPEED UP\n~the project",
+  "seconds": 4.5,
+  "anchorY": -0.27
+ },
+ {
+  "id": "rec",
+  "label": "REC badge",
+  "category": "social",
+  "description": "Blinking recording dot in the corner",
+  "help": "Text next to the blinking dot.",
+  "example": "REC · TEST 001",
+  "seconds": 6,
+  "anchorY": -0.44
+ },
+ {
+  "id": "chapter",
+  "label": "Chapter card",
+  "category": "titles",
+  "description": "Spaced-out label, a line that draws across, title rises in",
+  "help": "Line 1 is the small label (e.g. PART 01). The rest is the title.",
+  "example": "PART 01\nTOPIK AI",
+  "seconds": 3.5,
+  "anchorY": -0.26
+ },
+ {
+  "id": "wedding",
+  "label": "Wedding title",
+  "category": "titles",
+  "description": "Elegant serif names fading in letter by letter, with a dated rule",
+  "help": "// line is the small spaced heading, the plain line is the names (& is drawn in the accent colour), ~line is the date between two rules.",
+  "example": "// the wedding of\nAriff & Sarah\n~02 . 11 . 2026",
+  "seconds": 5,
+  "anchorY": -0.2
+ },
+ {
+  "id": "glitch",
+  "label": "Glitch",
+  "category": "titles",
+  "description": "RGB-split text with sliced glitch bursts",
+  "help": "Plain line glitches in. Optional ~line types out underneath.",
+  "example": "ERROR 404\n~motivation not found",
+  "seconds": 3.5,
+  "anchorY": -0.26
+ },
+ {
+  "id": "word-swap",
+  "label": "Word swap",
+  "category": "titles",
+  "description": "A fixed line with a slot below that cycles through words",
+  "help": "Line 1 stays. Each following line takes a turn in the accent box; the clip length is split between them.",
+  "example": "Claude boleh edit\nvideo\ngambar\ncode",
+  "seconds": 4.5,
+  "anchorY": -0.26
+ },
+ {
+  "id": "lower-third",
+  "label": "Lower third",
+  "category": "info",
+  "description": "Name and role bars wiping in beside an accent rule",
+  "help": "Line 1 is the name, ~line is the role. Sits on the left; move it with Position X/Y.",
+  "example": "Ariff Hakimi\n~Software Engineer",
+  "seconds": 4.5,
+  "anchorY": 0.3
+ },
+ {
+  "id": "location",
+  "label": "Location pin",
+  "category": "info",
+  "description": "Map pin drops and bounces, place name wipes out beside it",
+  "help": "Line 1 is the place, ~line the smaller detail (country, venue, date).",
+  "example": "Kuala Lumpur\n~Malaysia",
+  "seconds": 4,
+  "anchorY": 0.3
+ },
+ {
+  "id": "counter",
+  "label": "Number counter",
+  "category": "info",
+  "description": "Big number counts up, with a serif label",
+  "help": "The plain line holds the number — prefixes and suffixes are kept, e.g. RM 5,000 or 98.5%. ~line is the label, // a kicker.",
+  "example": "10x\n~lebih laju",
+  "seconds": 3.5,
+  "anchorY": -0.26
+ },
+ {
+  "id": "list",
+  "label": "Numbered list",
+  "category": "info",
+  "description": "Title plus numbered rows sliding in one by one",
+  "help": "#line is the title. Each other line is a numbered row; time rows with @seconds.",
+  "example": "#3 TIPS AI\nGuna prompt jelas\nBagi contoh\nSemak hasil",
+  "seconds": 5,
+  "anchorY": -0.26
+ },
+ {
+  "id": "versus",
+  "label": "Versus",
+  "category": "info",
+  "description": "Two cards slam in from the sides with a VS badge",
+  "help": "Two lines: left and right. Add a subtitle with | e.g. Claude | daily driver. // adds a kicker.",
+  "example": "ChatGPT\nClaude",
+  "seconds": 3.5,
+  "anchorY": -0.26
+ },
+ {
+  "id": "notification",
+  "label": "Phone notification",
+  "category": "social",
+  "description": "iOS-style banner drops in from the top",
+  "help": "Line 1 is the app name, line 2 the bold title, optional line 3 the message.",
+  "example": "Claude\nVideo kau dah siap 🎬\nTap untuk tengok",
+  "seconds": 3.5,
+  "anchorY": -0.36
+ },
+ {
+  "id": "chat",
+  "label": "Chat bubbles",
+  "category": "social",
+  "description": "Messages pop in one by one, with typing dots for replies",
+  "help": "Start a line with > for your message (right, accent) or < for a reply (left, white). Replies show typing dots first. Use @seconds to time a message.",
+  "example": "> boleh edit video aku?\n< boleh! hantar je footage\n> serius?? 😳",
+  "seconds": 5,
+  "anchorY": -0.22
+ },
+ {
+  "id": "cta",
+  "label": "Follow button",
+  "category": "social",
+  "description": "A cursor glides in and clicks a follow button",
+  "help": "Line 1 is the button text, line 2 the text after the click. ~line is a caption above.",
+  "example": "FOLLOW\nFOLLOWING\n~untuk part 2",
+  "seconds": 3.5,
+  "anchorY": 0.28
+ },
+ {
+  "id": "highlight",
+  "label": "Marker highlight",
+  "category": "emphasis",
+  "description": "Words rise in, then a marker sweeps behind the key words",
+  "help": "Mark words to highlight with *asterisks*. Without any, the last word is highlighted.",
+  "example": "AI tak ganti kau, *AI* *bantu* kau",
+  "seconds": 4,
+  "anchorY": -0.26
+ },
+ {
+  "id": "strike",
+  "label": "Strike-through",
+  "category": "emphasis",
+  "description": "Old idea gets crossed out, new one pops in",
+  "help": "Line 1 is struck out, line 2 replaces it.",
+  "example": "Edit manual\nGuna AI",
+  "seconds": 3.5,
+  "anchorY": -0.26
+ },
+ {
+  "id": "quote",
+  "label": "Quote",
+  "category": "emphasis",
+  "description": "Big quote mark, serif words fade in, attribution slides up",
+  "help": "The quote can span several lines. Start a line with — or - for the attribution.",
+  "example": "AI is everywhere, dalam setiap lapisan kehidupan\n— Ariff",
+  "seconds": 5,
+  "anchorY": -0.24
+ },
+ {
+  "id": "arrow",
+  "label": "Hand-drawn arrow",
+  "category": "emphasis",
+  "description": "A scribbled label and an arrow that draws itself",
+  "help": "Points down-right. Drag it into place; set Scale X to -1 to point left, or rotate it.",
+  "example": "ni dia!",
+  "seconds": 3,
+  "anchorY": -0.05
+ },
+ {
+  "id": "lottie",
+  "label": "Lottie animation",
+  "category": "lottie",
+  "description": "Small animated sticker. Set assetId to one of: check-pop, heart-pop, sparkle-burst, scribble-underline, arrow-bounce, bell-ring",
+  "help": "Import Lottie files in Motion → Lottie. Content is just the clip's label.",
+  "example": "Lottie animation",
+  "seconds": 2,
+  "anchorY": 0
+ }
+]
