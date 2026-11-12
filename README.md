@@ -16,7 +16,7 @@ You need these installed: Node 22+, FFmpeg, Python 3, and Claude Code (logged in
 ## Make a reel
 
 1. **New reel**: enter a topic, pick a style, a length, a language (English, Bahasa Melayu santai, or formal) and a call-to-action keyword. Then choose the voice:
-   - **AI voice (free)**: Kokoro (offline, English) or Edge TTS (needs internet; English and Malay).
+   - **AI voice**: Kokoro (free, offline, English), Edge TTS (free, needs internet; English and Malay), or **ElevenLabs** (your own ElevenLabs API key, set in Setup → API keys; English and Malay, choose voice, model, speed, stability and similarity).
    - **My recording**: you upload it after approving the plan.
 2. Claude writes the **plan**: the hook (headline, spoken line, first visual) and one row per spoken line. You can edit any cell, ask for changes with a note, or regenerate it.
 3. Click **Approve & make the reel**. Nothing gets built before this. From here it runs by itself:

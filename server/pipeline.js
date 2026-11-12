@@ -2,6 +2,7 @@
 const fs = require("fs");
 const path = require("path");
 const { EventEmitter } = require("events");
+const EL = require("./elevenlabs");
 const S = require("./store");
 const R = require("./runner");
 
@@ -379,10 +380,10 @@ async function makeAiVoice(id, ctx, override) {
   const script = spokenScript(p.plan);
   fs.writeFileSync(path.join(dir, "assets/vo/script.txt"), script);
   const out = path.join(dir, "assets/vo/voice.mp3");
-  await tts({ engine: v.engine, voice: v.voice, speed: v.speed, rate: v.rate, textFile: path.join(dir, "assets/vo/script.txt"), out, cwd: dir, ctx });
+  await tts({ ...v, lang: p.form.language, textFile: path.join(dir, "assets/vo/script.txt"), out, cwd: dir, ctx });
   update(id, (q) => {
     q.steps.voice = true; q.steps.words = false; q.steps.music = false; q.steps.build = false; q.steps.render = false;
-    q.voiceSource = "ai"; q.voiceScript = script; q.voiceInfo = { engine: v.engine, voice: v.voice };
+    q.voiceSource = "ai"; q.voiceScript = script; q.voiceInfo = { engine: v.engine, voice: v.voice, name: v.voiceName || v.voice, model: v.model };
     if (override) q.form.voice = override;
   });
   ctx.log("✔ Voice ready.");
@@ -403,9 +404,15 @@ async function ensureKokoro(log, onSpawn) {
   return hasPyModules(["kokoro_onnx", "soundfile"]);
 }
 
-async function tts({ engine, voice, speed, rate, textFile, out, cwd, ctx }) {
+async function tts({ engine, voice, speed, rate, model, stability, similarity, style, lang, textFile, out, cwd, ctx }) {
   const log = ctx ? ctx.log : () => {};
   const onSpawn = ctx && ctx.onSpawn;
+  if (engine === "elevenlabs") {
+    const text = fs.readFileSync(textFile, "utf8").replace(/\[[^\]]*\]/g, "").trim();
+    await EL.speak({ text, voice, model, lang, stability, similarity, style, speed, out, log });
+    if (!fs.existsSync(out) || fs.statSync(out).size < 1000) throw new Error("ElevenLabs returned an empty voice file.");
+    return;
+  }
   const edge = async (v, r) => {
     if (!(await hasPyModules(["edge_tts"]))) {
       log("Installing edge-tts (one time)…");

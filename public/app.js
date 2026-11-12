@@ -102,51 +102,117 @@ function appendLog(line, t) {
 }
 
 // ---------------- voice picker ----------------
+const EL = { voices: null, loading: null, error: "" };
+function loadElVoices(refresh) {
+  if (EL.voices && !refresh) return Promise.resolve(EL.voices);
+  if (EL.loading && !refresh) return EL.loading;
+  EL.error = "";
+  EL.loading = api(`/api/elevenlabs/voices${refresh ? "?refresh=1" : ""}`).then((v) => (EL.voices = v)).catch((e) => { EL.error = e.message; EL.voices = null; throw e; }).finally(() => { EL.loading = null; });
+  return EL.loading;
+}
+const elLabel = (x) => [x.name, [x.gender, x.accent, x.age].filter(Boolean).join(", "), x.languages.some((l) => /^ms|malay/i.test(l)) ? "speaks Malay" : "", x.category && x.category !== "premade" ? x.category : ""].filter(Boolean).join(" · ");
+function elVoiceOptions(langId, current) {
+  const ms = langId !== "en";
+  const all = (EL.voices || []).slice();
+  const malay = (x) => x.languages.some((l) => /^ms|malay/i.test(l));
+  if (ms) all.sort((a, b) => (malay(b) - malay(a)) || a.name.localeCompare(b.name));
+  let html = all.map((x) => `<option value="${esc(x.id)}" data-name="${esc(x.name)}" data-preview="${esc(x.preview)}" ${x.id === (current && current.voice) ? "selected" : ""}>${esc(elLabel(x))}</option>`).join("");
+  if (current && current.voice && !all.some((x) => x.id === current.voice)) html = `<option value="${esc(current.voice)}" data-name="${esc(current.voiceName || current.voice)}" selected>${esc(current.voiceName || current.voice)}</option>` + html;
+  return html + `<option value="__custom">Other voice ID (from the Voice Library)…</option>`;
+}
 function voicePicker(id, langId, v) {
   const voices = ST.app.voices;
   const isEn = langId === "en";
   const engines = Object.entries(voices).filter(([, e]) => e.languages.includes(langId));
   const engine = v && engines.some(([k]) => k === v.engine) ? v.engine : (isEn ? "kokoro" : "edge");
+  const engineSel = `<div><label class="f">Engine</label><select class="input" data-vpk="engine">${engines.map(([k, e]) => `<option value="${k}" ${k === engine ? "selected" : ""}>${esc(e.label)}</option>`).join("")}</select></div>`;
+  const testRow = (label) => `<div class="row" style="margin-top:10px"><button class="btn" type="button" data-vptest>${label}</button><span data-vpaudio class="grow"></span></div>`;
+  if (engine === "elevenlabs") {
+    const el = ST.app.elevenlabs || { models: [], defaultModel: "eleven_v4", hasKey: false };
+    if (!el.hasKey) {
+      return `<div data-vp="${id}" data-lang="${esc(langId)}"><div class="grid3">${engineSel}</div>
+        <div class="banner warn" style="margin-top:10px">Add your ElevenLabs API key in <a href="#/setup">Setup → API keys</a> first, then come back here to pick a voice.</div></div>`;
+    }
+    const model = (v && v.model) || el.defaultModel;
+    const num = (k, d) => (v && v[k] != null ? v[k] : d);
+    return `<div data-vp="${id}" data-lang="${esc(langId)}" data-engine="elevenlabs"><div class="grid3">
+      ${engineSel}
+      <div><label class="f">Voice <a href="#" class="muted small" data-elrefresh>↻ refresh</a></label><select class="input" data-vpk="voice">${EL.voices ? elVoiceOptions(langId, v) : `<option value="${esc((v && v.voice) || "")}" data-name="${esc((v && v.voiceName) || "")}">${esc((v && v.voiceName) || (EL.error ? "Couldn't load voices" : "Loading your voices…"))}</option>`}</select>
+        <input class="input" data-vpk="customVoice" placeholder="Paste a voice ID" style="margin-top:6px;display:none"></div>
+      <div><label class="f">Model</label><select class="input" data-vpk="model">${el.models.map((m) => `<option value="${m.id}" ${m.id === model ? "selected" : ""}>${esc(m.label)}</option>`).join("")}</select></div>
+    </div>
+    <div class="grid3" style="margin-top:8px">
+      <div><label class="f">Speed <span class="muted" data-vpo="speed">${num("speed", 1)}×</span></label><input type="range" min="0.7" max="1.2" step="0.05" value="${num("speed", 1)}" data-vpk="speed"></div>
+      <div><label class="f">Stability <span class="muted" data-vpo="stability">${num("stability", 0.5)}</span></label><input type="range" min="0" max="1" step="0.05" value="${num("stability", 0.5)}" data-vpk="stability"></div>
+      <div><label class="f">Similarity <span class="muted" data-vpo="similarity">${num("similarity", 0.75)}</span></label><input type="range" min="0" max="1" step="0.05" value="${num("similarity", 0.75)}" data-vpk="similarity"></div>
+    </div>
+    ${EL.error ? `<div class="banner err" style="margin-top:10px">${esc(EL.error)}</div>` : ""}
+    <p class="muted small" style="margin:8px 0 0">Lower stability = more expressive, higher = steadier. Voices marked “speaks Malay” are verified for Malay; others can still try. ElevenLabs charges your account per character (a 40 s reel is about 600 characters).</p>
+    <div class="row" style="margin-top:10px"><button class="btn" type="button" data-vpprev>▶ Free preview</button><button class="btn" type="button" data-vptest>▶ Test with my text (uses ~120 characters)</button><span data-vpaudio class="grow"></span></div></div>`;
+  }
   const list = voices[engine].voices.filter((x) => engine !== "edge" || !x.lang || (isEn ? x.lang === "en" : x.lang === "ms"));
   const voice = v && list.some((x) => x.id === v.voice) ? v.voice : list[0].id;
   return `<div data-vp="${id}" data-lang="${esc(langId)}"><div class="grid3">
-    <div><label class="f">Engine</label><select class="input" data-vpk="engine">${engines.map(([k, e]) => `<option value="${k}" ${k === engine ? "selected" : ""}>${esc(e.label)}</option>`).join("")}</select></div>
+    ${engineSel}
     <div><label class="f">Voice</label><select class="input" data-vpk="voice">${list.map((x) => `<option value="${x.id}" ${x.id === voice ? "selected" : ""}>${esc(x.label)}</option>`).join("")}</select></div>
     <div>${engine === "kokoro"
-      ? `<label class="f">Speed <span class="muted" data-vpo>${(v && v.speed) || 1}×</span></label><input type="range" min="0.8" max="1.25" step="0.05" value="${(v && v.speed) || 1}" data-vpk="speed">`
+      ? `<label class="f">Speed <span class="muted" data-vpo="speed">${(v && v.speed) || 1}×</span></label><input type="range" min="0.8" max="1.25" step="0.05" value="${(v && v.speed) || 1}" data-vpk="speed">`
       : `<label class="f">Pace</label><select class="input" data-vpk="rate">${["-15%", "-10%", "-5%", "+0%", "+5%", "+10%", "+15%"].map((r) => `<option ${r === ((v && v.rate) || "+0%") ? "selected" : ""}>${r}</option>`).join("")}</select>`}</div>
   </div>
-  <div class="row" style="margin-top:10px"><button class="btn" type="button" data-vptest>▶ Test this voice</button><span data-vpaudio class="grow"></span></div></div>`;
+  ${testRow("▶ Test this voice")}</div>`;
 }
 function readVoice(id) {
   const box = $(`[data-vp="${id}"]`); if (!box) return null;
   const g = (k) => { const el = $(`[data-vpk="${k}"]`, box); return el ? el.value : undefined; };
   const v = { engine: g("engine"), voice: g("voice") };
+  if (v.engine === "elevenlabs") {
+    const sel = $(`[data-vpk="voice"]`, box);
+    if (v.voice === "__custom") { v.voice = (g("customVoice") || "").trim(); v.voiceName = v.voice; }
+    else v.voiceName = sel && sel.selectedOptions[0] ? sel.selectedOptions[0].dataset.name || v.voice : v.voice;
+    v.model = g("model"); v.speed = parseFloat(g("speed") || "1"); v.stability = parseFloat(g("stability") || "0.5"); v.similarity = parseFloat(g("similarity") || "0.75");
+    return v;
+  }
   if (v.engine === "kokoro") v.speed = parseFloat(g("speed") || "1"); else v.rate = g("rate") || "+0%";
   return v;
 }
 function bindVoicePicker(id, onChange) {
   const box = $(`[data-vp="${id}"]`); if (!box) return;
+  const redraw = (v) => { const b = $(`[data-vp="${id}"]`); if (!b) return; b.outerHTML = voicePicker(id, b.dataset.lang, v); bindVoicePicker(id, onChange); };
   box.addEventListener("change", (e) => {
-    if (e.target.dataset.vpk === "engine") {
-      const v = { engine: e.target.value };
-      box.outerHTML = voicePicker(id, box.dataset.lang, v);
-      bindVoicePicker(id, onChange);
-    }
+    const k = e.target.dataset.vpk;
+    if (k === "engine") return redraw({ engine: e.target.value }), onChange && onChange(readVoice(id));
+    if (k === "voice") { const c = $(`[data-vpk="customVoice"]`, box); if (c) c.style.display = e.target.value === "__custom" ? "" : "none"; }
     onChange && onChange(readVoice(id));
   });
-  box.addEventListener("input", (e) => { if (e.target.dataset.vpk === "speed") $("[data-vpo]", box).textContent = `${e.target.value}×`; });
+  box.addEventListener("input", (e) => {
+    const k = e.target.dataset.vpk, o = k && $(`[data-vpo="${k}"]`, box);
+    if (o) o.textContent = k === "speed" ? `${e.target.value}×` : e.target.value;
+    if (k === "customVoice") onChange && onChange(readVoice(id));
+  });
+  if (box.dataset.engine === "elevenlabs") {
+    if (!EL.voices && !EL.error) loadElVoices().then(() => redraw(readVoice(id))).catch(() => redraw(readVoice(id)));
+    const rf = $("[data-elrefresh]", box);
+    if (rf) rf.addEventListener("click", (e) => { e.preventDefault(); const v = readVoice(id); loadElVoices(true).then(() => redraw(v)).catch(() => redraw(v)); });
+    const pv = $("[data-vpprev]", box);
+    if (pv) pv.addEventListener("click", () => {
+      const sel = $(`[data-vpk="voice"]`, box), url = sel && sel.selectedOptions[0] && sel.selectedOptions[0].dataset.preview;
+      $("[data-vpaudio]", box).innerHTML = url ? `<audio controls autoplay src="${esc(url)}"></audio>` : `<span class="muted small">This voice has no free preview; use Test.</span>`;
+    });
+  }
   const tb = $("[data-vptest]", box);
+  if (!tb) return;
+  const label = tb.innerHTML;
   tb.addEventListener("click", tryDo(async () => {
     const v = readVoice(id);
     const text = box.dataset.lang === "en" ? "Did you know you can turn one idea into a finished animated reel? Let me show you how it works." : "Tahukah korang, satu idea boleh jadi reel animasi siap? Jom saya tunjuk macam mana.";
     tb.disabled = true; tb.innerHTML = `<span class="spin"></span> Making a sample…`;
     try {
-      const r = await api("/api/tts/test", { body: { ...v, text } });
+      const r = await api("/api/tts/test", { body: { ...v, lang: box.dataset.lang, text } });
       $("[data-vpaudio]", box).innerHTML = `<audio controls autoplay src="${r.url}"></audio>`;
-    } finally { tb.disabled = false; tb.innerHTML = "▶ Test this voice"; }
+    } finally { tb.disabled = false; tb.innerHTML = label; }
   }));
 }
+
 
 // ---------------- Projects ----------------
 async function viewProjects() {
@@ -194,14 +260,14 @@ async function viewNew() {
         <div class="field" style="margin:0"><label class="f">Captions <span class="muted">· canvas styles</span></label><select class="input" name="captionStyle"><option value="box" ${F.captionStyle !== "pop" ? "selected" : ""}>Highlight box</option><option value="pop" ${F.captionStyle === "pop" ? "selected" : ""}>Pop &amp; colour</option></select></div>
       </div>
     </div>
-    <div class="card"><div class="card-h"><h2>Voice</h2><div class="spacer"></div><div class="seg" id="vmode"><button type="button" data-m="ai" class="${F.voiceMode === "ai" ? "on" : ""}">🤖 AI voice (free)</button><button type="button" data-m="upload" class="${F.voiceMode === "upload" ? "on" : ""}">🎙 My recording</button></div></div>
+    <div class="card"><div class="card-h"><h2>Voice</h2><div class="spacer"></div><div class="seg" id="vmode"><button type="button" data-m="ai" class="${F.voiceMode === "ai" ? "on" : ""}">🤖 AI voice</button><button type="button" data-m="upload" class="${F.voiceMode === "upload" ? "on" : ""}">🎙 My recording</button></div></div>
       <div id="vbox"></div></div>
     <div class="row"><button class="btn primary big" type="submit" id="go">✨ Write the plan</button><span class="muted small">Claude writes the plan in about a minute. You review and approve it, then the reel builds and renders by itself.</span></div>
   </form>`;
   const form = $("#nf");
   const renderVBox = () => {
     $("#vbox").innerHTML = F.voiceMode === "ai"
-      ? `<p class="muted small" style="margin-top:0">After you approve the plan, the AI voice reads it and everything else happens automatically. Kokoro runs offline (English); Edge TTS needs internet and also speaks Malay.</p>${voicePicker("new", F.language, F.voice)}`
+      ? `<p class="muted small" style="margin-top:0">After you approve the plan, the AI voice reads it and everything else happens automatically. Kokoro runs offline (English); Edge TTS needs internet and also speaks Malay; ElevenLabs uses your own ElevenLabs account (English and Malay).</p>${voicePicker("new", F.language, F.voice)}`
       : `<p class="muted small" style="margin:0">After you approve the plan you'll get the script to read. Record it on your phone in one natural take (quiet room, ~20 cm away) and upload the MP3/M4A on the project page. The reel builds as soon as it's uploaded.</p>`;
     bindVoicePicker("new", (v) => (F.voice = v));
     if (F.voiceMode === "ai") F.voice = readVoice("new");
@@ -212,7 +278,7 @@ async function viewNew() {
     const s = styleOf(F.styleId); if (s.length) { form.length.value = s.length; $("#lenv").textContent = `${s.length} s`; }
   }));
   form.length.addEventListener("input", () => ($("#lenv").textContent = `${form.length.value} s`));
-  form.language.addEventListener("change", () => { F.language = form.language.value; F.voice = null; renderVBox(); });
+  form.language.addEventListener("change", () => { F.language = form.language.value; F.voice = F.language === "en" ? ST.app.settings.voiceEn : ST.app.settings.voiceMs; renderVBox(); });
   $$("#vmode button").forEach((b) => b.addEventListener("click", () => { $$("#vmode button").forEach((x) => x.classList.remove("on")); b.classList.add("on"); F.voiceMode = b.dataset.m; renderVBox(); }));
   form.addEventListener("submit", tryDo(async (e) => {
     e.preventDefault();
@@ -289,7 +355,7 @@ function renderProjectSections(first) {
   const vt = Date.parse(p.updatedAt) || 0;
   $("#cvoice").innerHTML = `<div class="card-h"><span class="num ${voiceDone ? "done" : ss.now === 1 ? "now" : ""}">${voiceDone ? "✓" : 2}</span><h2>Voice</h2><div class="spacer"></div>
       <div class="seg" id="pvmode"><button data-m="ai" class="${p.form.voiceMode !== "upload" ? "on" : ""}">🤖 AI voice</button><button data-m="upload" class="${p.form.voiceMode === "upload" ? "on" : ""}">🎙 My recording</button></div></div>
-    ${p.files.voice ? `<div class="row" style="margin-bottom:12px"><audio controls src="/files/${p.id}/assets/vo/voice.mp3?t=${vt}"></audio><span class="muted small">${p.voiceSource === "upload" ? "Your recording" : `AI voice${p.voiceInfo ? ` · ${esc(p.voiceInfo.voice || "")}` : ""}`}${p.voiceSeconds ? ` · ${p.voiceSeconds}s · ${p.wordCount} words timed` : ""}</span></div>` : ""}
+    ${p.files.voice ? `<div class="row" style="margin-bottom:12px"><audio controls src="/files/${p.id}/assets/vo/voice.mp3?t=${vt}"></audio><span class="muted small">${p.voiceSource === "upload" ? "Your recording" : `AI voice${p.voiceInfo ? ` · ${p.voiceInfo.engine === "elevenlabs" ? "ElevenLabs · " : ""}${esc(p.voiceInfo.name || p.voiceInfo.voice || "")}` : ""}`}${p.voiceSeconds ? ` · ${p.voiceSeconds}s · ${p.wordCount} words timed` : ""}</span></div>` : ""}
     <div id="pvbox"></div>
     <p class="muted small" style="margin:10px 0 0">Changing the voice re-times the words and rebuilds the scenes automatically.</p>
     <div style="border-top:1px solid var(--line);margin-top:14px;padding-top:12px"><div class="row"><b>🎵 Music</b><span class="muted small">${(() => { const m = p.form.music || {}; return m.mode === "upload" ? `your song: ${esc(m.name || m.file || "")}` : m.mode === "search" ? `free music: “${esc(m.query || "")}”` : "none"; })()}${p.musicCredit ? ` · ${esc(p.musicCredit)}` : ""}</span></div>
@@ -481,6 +547,14 @@ async function viewSetup() {
         <div class="field"><label class="f">Pixabay API key</label><input class="input" name="pixabayKey" type="password" value="${esc(s.pixabayKey || "")}"></div>
         <div class="field"><label class="f">Unsplash access key</label><input class="input" name="unsplashKey" type="password" value="${esc(s.unsplashKey || "")}"></div>
         <div class="field"><label class="f">Freesound API key</label><input class="input" name="freesoundKey" type="password" value="${esc(s.freesoundKey || "")}"></div>
+      </div>
+      <h3>ElevenLabs voices (optional, paid by your ElevenLabs plan)</h3>
+      <p class="muted small" style="margin-top:0">Create a key at <a href="https://elevenlabs.io/app/settings/api-keys" target="_blank">elevenlabs.io → API keys</a> with <b>Text to Speech</b> and <b>Voices (read)</b> permissions. Then pick ElevenLabs as the engine for any reel or as your default voice below. Your key stays on this computer.</p>
+      <div class="grid2">
+        <div class="field"><label class="f">ElevenLabs API key</label><input class="input" name="elevenlabsKey" type="password" value="${esc(s.elevenlabsKey || "")}" autocomplete="off"></div>
+        <div class="field"><label class="f">&nbsp;</label><div class="row"><button class="btn" type="button" id="elcheck">Check key</button><span class="muted small" id="elinfo"></span></div></div>
+      </div>
+      <div class="grid2">
         <div class="field"><label class="f">Accent colour</label><input class="input" name="accent" type="color" value="${esc(s.accent || "#ff6a2b")}" style="height:42px;padding:4px"></div>
       </div>
       <label class="check field"><input type="checkbox" name="colorGrade" ${s.colorGrade !== false ? "checked" : ""}> Warm colour grade on talking videos by default</label>
@@ -491,13 +565,24 @@ async function viewSetup() {
       <p class="muted small" style="margin-top:14px">Data folder: <code>${esc(ST.app.dataDir)}</code> (settings, custom prompts, trash).</p>
     </form>`;
   bindVoicePicker("en"); bindVoicePicker("ms");
+  $("#elcheck").onclick = tryDo(async () => {
+    const k = $("#sf").elevenlabsKey.value.trim();
+    if (!k) return toast("Paste your ElevenLabs API key first", true);
+    if (k !== (ST.app.settings.elevenlabsKey || "")) { await api("/api/settings", { method: "PUT", body: { elevenlabsKey: k } }); ST.app = await api("/api/state"); EL.voices = null; EL.error = ""; }
+    $("#elinfo").innerHTML = `<span class="spin"></span> Checking…`;
+    try {
+      const [a, vs] = await Promise.all([api("/api/elevenlabs/account").catch(() => null), loadElVoices(true)]);
+      $("#elinfo").textContent = `✔ Key works · ${vs.length} voices${a && a.limit ? ` · ${(a.limit - a.used).toLocaleString()} of ${a.limit.toLocaleString()} characters left (${a.tier})` : ""}`;
+      for (const id of ["en", "ms"]) { const b = $(`[data-vp="${id}"]`); if (b && readVoice(id).engine === "elevenlabs") { b.outerHTML = voicePicker(id, b.dataset.lang, readVoice(id)); bindVoicePicker(id); } }
+    } catch (e) { $("#elinfo").textContent = "✖ " + e.message; }
+  });
   $("#recheck").onclick = loadChecks;
   const da = $("#licdeact");
   if (da) da.onclick = tryDo(async () => { if (!confirm("Deactivate Reel Studio on this computer? You'll need your key to use it here again.")) return; const s = await api("/api/license/deactivate", { body: {} }); viewLicense(s); });
   $$("[data-s]").forEach((b) => b.addEventListener("click", tryDo(async () => { $("#log").innerHTML = ""; await api(`/api/setup/${b.dataset.s}`, { body: {} }); toast("Started, see the log"); })));
   $("#sf").addEventListener("submit", tryDo(async (e) => {
     e.preventDefault(); const f = e.target;
-    const body = { projectsDir: f.projectsDir.value.trim(), python: f.python.value.trim(), claudeCmd: f.claudeCmd.value.trim() || "claude", claudeModel: f.claudeModel.value.trim(), whisperModel: f.whisperModel.value, hf: f.hf.value.trim() || "0.8.145", browserPath: f.browserPath.value.trim(), pexelsKey: f.pexelsKey.value.trim(), pixabayKey: f.pixabayKey.value.trim(), unsplashKey: f.unsplashKey.value.trim(), freesoundKey: f.freesoundKey.value.trim(), accent: f.accent.value, colorGrade: f.colorGrade.checked, autoQA: f.autoQA.checked, openBrowser: f.openBrowser.checked, voiceEn: readVoice("en"), voiceMs: readVoice("ms") };
+    const body = { projectsDir: f.projectsDir.value.trim(), python: f.python.value.trim(), claudeCmd: f.claudeCmd.value.trim() || "claude", claudeModel: f.claudeModel.value.trim(), whisperModel: f.whisperModel.value, hf: f.hf.value.trim() || "0.8.145", browserPath: f.browserPath.value.trim(), pexelsKey: f.pexelsKey.value.trim(), pixabayKey: f.pixabayKey.value.trim(), unsplashKey: f.unsplashKey.value.trim(), freesoundKey: f.freesoundKey.value.trim(), elevenlabsKey: f.elevenlabsKey.value.trim(), accent: f.accent.value, colorGrade: f.colorGrade.checked, autoQA: f.autoQA.checked, openBrowser: f.openBrowser.checked, voiceEn: readVoice("en"), voiceMs: readVoice("ms") };
     await api("/api/settings", { method: "PUT", body }); ST.app = await api("/api/state"); toast("Settings saved");
   }));
   loadChecks();

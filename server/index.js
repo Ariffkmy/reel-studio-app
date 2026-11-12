@@ -39,6 +39,7 @@ setInterval(() => L.validate().catch(() => {}), 6 * 3600 * 1000).unref();
 app.get("/api/state", wrap(() => ({
   license: L.status(),
   settings: S.getSettings(), styles: S.publicStyles(), packed: S.PACKED, languages: S.getLanguages(), voices: S.getVoices(),
+  elevenlabs: { models: require("./elevenlabs").MODELS, defaultModel: require("./elevenlabs").DEFAULT_MODEL, hasKey: !!(S.getSettings().elevenlabsKey || "").trim() },
   dataDir: S.DATA, python: R.python(), platform: process.platform,
 })));
 app.put("/api/settings", wrap((req) => S.saveSettings(req.body || {})));
@@ -155,14 +156,19 @@ app.get("/files/:id/*", (req, res) => {
 });
 app.use("/tmp", express.static(path.join(S.DATA, "tmp"), { maxAge: 0 }));
 
+// ---------- ElevenLabs ----------
+const EL = require("./elevenlabs");
+app.get("/api/elevenlabs/voices", wrap((req) => EL.listVoices(req.query.refresh === "1")));
+app.get("/api/elevenlabs/account", wrap(() => EL.account()));
+
 // ---------- voice test ----------
 app.post("/api/tts/test", wrap(async (req) => {
-  const { engine, voice, speed, rate, text } = req.body || {};
+  const { engine, voice, speed, rate, model, stability, similarity, style, lang, text } = req.body || {};
   const dir = path.join(S.DATA, "tmp");
   const name = `test-${Date.now()}`;
   const txt = path.join(dir, `${name}.txt`), out = path.join(dir, `${name}.mp3`);
   fs.writeFileSync(txt, String(text || "Hello! This is how your reel will sound.").slice(0, 400));
-  await P.tts({ engine, voice, speed, rate, textFile: txt, out, cwd: dir, ctx: { log: (l) => P.log("setup", l) } });
+  await P.tts({ engine, voice, speed, rate, model, stability, similarity, style, lang, textFile: txt, out, cwd: dir, ctx: { log: (l) => P.log("setup", l) } });
   return { url: `/tmp/${name}.mp3` };
 }));
 

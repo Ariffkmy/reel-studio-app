@@ -25,7 +25,7 @@ const DEFAULTS = {
   hf: "0.8.145",
   browserPath: "",
   accent: "#ff6a2b",
-  pexelsKey: "", pixabayKey: "", unsplashKey: "", freesoundKey: "",
+  pexelsKey: "", pixabayKey: "", unsplashKey: "", freesoundKey: "", elevenlabsKey: "",
   colorGrade: true,          // empty = HyperFrames picks/downloads its own Chrome
   whisperModel: "medium",
   autoQA: true,
